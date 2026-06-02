@@ -10,7 +10,7 @@
   "scripts": {
     "dev": "tsx watch src/server.ts",
     "build": "tsc && tsc-alias",
-    "render-build": "npm ci && npx -y -p typescript@5.7.3 tsc && npx tsc-alias",
+    "render-build": "npm ci --include=dev && npx -y -p typescript@5.7.3 tsc && npx tsc-alias",
     "start": "node dist/server.js",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
