@@ -18,6 +18,7 @@
   /* Brand Colors */
   --color-primary:               #4f46e5;
   --color-primary-hover:         #3525cd;
+  --color-primary-dark:          #3525cd;  /* Alias for primary-hover — backwards compat */
   --color-primary-light:         #e2dfff;
   --color-primary-dim:           #c3c0ff;
   --color-primary-container:     #e0e7ff;
@@ -142,6 +143,7 @@
   --color-outline:               #555555;
   --color-primary:               #6366f1;
   --color-primary-hover:         #818cf8;
+  --color-primary-dark:          #818cf8;  /* Alias for primary-hover */
   --color-primary-light:         #312e81;
   --color-primary-dim:           #4338ca;
   --color-primary-container:     #3730a3;
@@ -362,6 +364,160 @@ body {
 ::selection {
   background-color: var(--color-primary-light);
   color: var(--color-primary-hover);
+}
+
+/* ═══════════════════════════════════════════════════════════
+   COURSE DETAIL — Premium Styles
+   ═══════════════════════════════════════════════════════════ */
+
+/* ── Header Gradient ── */
+.course-detail-header {
+  background: linear-gradient(135deg, #1a1a2e 0%, #16213e 40%, #0f3460 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.course-detail-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  right: -10%;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.course-detail-header::after {
+  content: '';
+  position: absolute;
+  bottom: -30%;
+  left: 10%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.dark .course-detail-header {
+  background: linear-gradient(135deg, #0a0a0f 0%, #111827 40%, #1e1b4b 100%);
+}
+
+/* ── Sidebar Premium Card ── */
+.course-sidebar-card {
+  background: var(--color-surface-container-lowest);
+  border: 1px solid var(--color-outline-variant);
+  border-radius: 1rem;
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.07),
+    0 10px 30px -5px rgba(79, 70, 229, 0.08);
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+}
+
+.course-sidebar-card:hover {
+  box-shadow:
+    0 8px 12px -2px rgba(0, 0, 0, 0.08),
+    0 16px 40px -8px rgba(79, 70, 229, 0.12);
+}
+
+.dark .course-sidebar-card {
+  background: var(--color-surface-container-low);
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.3),
+    0 10px 30px -5px rgba(99, 102, 241, 0.08);
+}
+
+/* ── Thumbnail Overlay ── */
+.course-thumbnail-wrap {
+  position: relative;
+}
+
+.course-thumbnail-wrap::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 60px;
+  background: linear-gradient(to top, var(--color-surface-container-lowest), transparent);
+  pointer-events: none;
+}
+
+.dark .course-thumbnail-wrap::after {
+  background: linear-gradient(to top, var(--color-surface-container-low), transparent);
+}
+
+/* ── Buy Button Gradient ── */
+.btn-buy-course {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #7c3aed 100%);
+  color: var(--color-on-primary);
+  border: none;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-buy-course::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.btn-buy-course:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+}
+
+.btn-buy-course:hover::before {
+  opacity: 1;
+}
+
+.btn-buy-course:active {
+  transform: translateY(0);
+}
+
+.btn-buy-course:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* ── Star Rating Token Color ── */
+.star-filled {
+  color: var(--color-tertiary-dim, #ffb95f);
+  fill: var(--color-tertiary-dim, #ffb95f);
+}
+
+.star-empty {
+  color: var(--color-outline-variant);
+  fill: none;
+}
+
+/* ── Course Includes Feature List ── */
+.course-feature-item {
+  display: flex;
+  align-items: center;
+  padding: 0.5rem 0;
+  transition: padding-left 0.2s ease;
+}
+
+.course-feature-item:hover {
+  padding-left: 0.25rem;
+}
+
+.course-feature-item svg {
+  color: var(--color-primary);
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.course-feature-item:hover svg {
+  transform: scale(1.1);
 }
 
 /* ═══════════════════════════════════════════════════════════

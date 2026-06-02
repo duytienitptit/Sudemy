@@ -3,6 +3,7 @@ import { Link, useSearchParams } from 'react-router-dom'
 import { Helmet } from 'react-helmet-async'
 import { motion } from 'framer-motion'
 import { XCircle, RotateCcw, MessageCircle, ChevronLeft } from 'lucide-react'
+import { Button } from '@/components/ui/Button'
 
 export default function PaymentCancelPage() {
   const [searchParams] = useSearchParams()
@@ -85,33 +86,43 @@ export default function PaymentCancelPage() {
                 className="space-y-3"
               >
                 {courseSlug ? (
-                  <Link
+                  <Button
+                    as={Link}
                     to={`/courses/${courseSlug}`}
                     id="btn-retry-payment"
-                    className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
+                    variant="primary"
+                    size="xl"
+                    fullWidth
                   >
                     <RotateCcw className="w-5 h-5" />
                     Thử lại thanh toán
-                  </Link>
+                  </Button>
                 ) : (
-                  <Link
+                  <Button
+                    as={Link}
                     to="/courses"
                     id="btn-browse-courses"
-                    className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
+                    variant="primary"
+                    size="xl"
+                    fullWidth
                   >
                     <ChevronLeft className="w-5 h-5" />
                     Quay lại danh sách khóa học
-                  </Link>
+                  </Button>
                 )}
 
-                <Link
+                <Button
+                  as={Link}
                   to="/support"
                   id="btn-contact-support"
-                  className="flex items-center justify-center gap-2 w-full py-3 text-[var(--color-on-surface-variant)] border border-[var(--color-outline-variant)] hover:border-[var(--color-primary)] hover:text-[var(--color-primary)] font-medium rounded-xl transition-colors text-sm"
+                  variant="outline"
+                  size="default"
+                  fullWidth
+                  className="rounded-xl"
                 >
                   <MessageCircle className="w-4 h-4" />
                   Liên hệ hỗ trợ
-                </Link>
+                </Button>
               </motion.div>
             </div>
           </div>

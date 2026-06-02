@@ -6,6 +6,7 @@ import { motion } from 'framer-motion'
 import { CheckCircle, BookOpen, LayoutDashboard, Receipt, Loader2, AlertTriangle, RefreshCw } from 'lucide-react'
 import { verifyOrderPayment, getOrderById } from '@/services/payment.service'
 import { useAuth } from '@/contexts/AuthContext'
+import { Button } from '@/components/ui/Button'
 
 export default function PaymentSuccessPage() {
   const [searchParams] = useSearchParams()
@@ -114,13 +115,15 @@ export default function PaymentSuccessPage() {
           <p className="text-[var(--color-on-surface-variant)] mb-8">
             Đã xảy ra lỗi khi xác minh đơn hàng. Vui lòng thử lại.
           </p>
-          <button
+          <Button
+            variant="primary"
+            size="xl"
+            fullWidth
             onClick={handleRetry}
-            className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
           >
             <RefreshCw className="w-5 h-5" />
             Thử lại
-          </button>
+          </Button>
         </div>
       )
     }
@@ -161,13 +164,15 @@ export default function PaymentSuccessPage() {
             transition={{ delay: 0.4 }}
             className="mt-6"
           >
-            <button
+            <Button
+              variant="primary"
+              size="xl"
+              fullWidth
               onClick={handleRetry}
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
             >
               <RefreshCw className="w-5 h-5" />
               Kiểm tra lại
-            </button>
+            </Button>
           </motion.div>
         </div>
       )
@@ -204,26 +209,36 @@ export default function PaymentSuccessPage() {
             className="space-y-3 mt-6"
           >
             {course ? (
-              <Link
+              <Button
+                as={Link}
                 to={`/courses/${course.slug}`}
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
+                variant="primary"
+                size="xl"
+                fullWidth
               >
                 Thử mua lại
-              </Link>
+              </Button>
             ) : (
-              <Link
+              <Button
+                as={Link}
                 to="/courses"
-                className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
+                variant="primary"
+                size="xl"
+                fullWidth
               >
                 Quay lại danh sách khóa học
-              </Link>
+              </Button>
             )}
-            <Link
+            <Button
+              as={Link}
               to="/dashboard/orders"
-              className="flex items-center justify-center gap-2 w-full py-3 text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] font-medium transition-colors text-sm"
+              variant="link"
+              size="default"
+              fullWidth
+              className="text-sm"
             >
               Xem lịch sử đơn hàng →
-            </Link>
+            </Button>
           </motion.div>
         </div>
       )
@@ -272,31 +287,41 @@ export default function PaymentSuccessPage() {
           className="space-y-3"
         >
           {course ? (
-            <Link
+            <Button
+              as={Link}
               to={`/learn/${course.slug}`}
               id="btn-start-learning"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
+              variant="primary"
+              size="xl"
+              fullWidth
             >
               <BookOpen className="w-5 h-5" />
               Bắt đầu học ngay
-            </Link>
+            </Button>
           ) : (
-            <Link
+            <Button
+              as={Link}
               to="/dashboard"
               id="btn-go-dashboard"
-              className="flex items-center justify-center gap-2 w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-dark)] text-white font-bold rounded-xl transition-colors text-lg"
+              variant="primary"
+              size="xl"
+              fullWidth
             >
               <LayoutDashboard className="w-5 h-5" />
               Vào trang học tập
-            </Link>
+            </Button>
           )}
 
-          <Link
+          <Button
+            as={Link}
             to="/dashboard/orders"
-            className="flex items-center justify-center gap-2 w-full py-3 text-[var(--color-on-surface-variant)] hover:text-[var(--color-primary)] font-medium transition-colors text-sm"
+            variant="link"
+            size="default"
+            fullWidth
+            className="text-sm"
           >
             Xem lịch sử đơn hàng →
-          </Link>
+          </Button>
         </motion.div>
       </div>
     )
