@@ -1,0 +1,6 @@
+# Controllers
+# Controllers are thin — they parse request, call a service, and return a response.
+# No business logic allowed here.
+#
+# Naming: <domain>.controller.ts
+# Example: auth.controller.ts, course.controller.ts

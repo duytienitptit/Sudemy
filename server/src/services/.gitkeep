@@ -1,0 +1,5 @@
+# Services
+# All business logic lives here. Services are testable without HTTP context.
+#
+# Naming: <domain>.service.ts
+# Example: auth.service.ts, course.service.ts

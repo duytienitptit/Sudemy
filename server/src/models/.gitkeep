@@ -1,0 +1,5 @@
+# Models
+# Mongoose schemas, virtuals, hooks. No business logic.
+#
+# Naming: <Domain>.model.ts (PascalCase)
+# Example: User.model.ts, Course.model.ts

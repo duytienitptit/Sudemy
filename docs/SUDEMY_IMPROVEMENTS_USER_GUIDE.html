@@ -1,0 +1,1906 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sudemy — Tài liệu Cải tiến Hệ thống</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ========== CSS VARIABLES ========== */
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #3525cd;
+            --primary-light: #e2dfff;
+            --primary-dim: #c3c0ff;
+            --secondary: #006591;
+            --secondary-light: #c9e6ff;
+            --tertiary: #684000;
+            --tertiary-light: #ffddb8;
+            --success: #22c55e;
+            --success-light: #dcfce7;
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --error: #ba1a1a;
+            --error-light: #ffdad6;
+            --background: #f9f9ff;
+            --surface: #ffffff;
+            --surface-dim: #f0f3ff;
+            --on-surface: #111c2d;
+            --on-surface-variant: #464555;
+            --outline: #777587;
+            --outline-variant: #c7c4d8;
+            --inverse-surface: #1e1e2e;
+            --font-heading: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --shadow-card: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+            --shadow-hover: 0 10px 15px -3px rgb(0 0 0 / 0.08);
+            --shadow-modal: 0 20px 25px -5px rgb(0 0 0 / 0.1);
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+        }
+
+        /* ========== RESET & BASE ========== */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-body);
+            color: var(--on-surface);
+            background: var(--background);
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ========== HEADER / HERO ========== */
+        .hero {
+            position: relative;
+            background: linear-gradient(135deg, #1e1b4b 0%, #312e81 30%, #4338ca 60%, #6366f1 100%);
+            color: #ffffff;
+            padding: 80px 24px 100px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 50%, rgba(99, 102, 241, 0.3) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 30%, rgba(139, 92, 246, 0.2) 0%, transparent 40%),
+                        radial-gradient(circle at 50% 80%, rgba(59, 130, 246, 0.15) 0%, transparent 50%);
+            animation: heroFloat 20s ease-in-out infinite;
+            pointer-events: none;
+        }
+
+        @keyframes heroFloat {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(2%, -1%) rotate(1deg); }
+            50% { transform: translate(-1%, 2%) rotate(-0.5deg); }
+            75% { transform: translate(1%, -2%) rotate(0.5deg); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.18);
+            padding: 6px 16px;
+            border-radius: 999px;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            margin-bottom: 24px;
+            animation: fadeInDown 0.6s ease;
+        }
+
+        .hero h1 {
+            font-family: var(--font-heading);
+            font-size: clamp(2rem, 5vw, 3.2rem);
+            font-weight: 800;
+            line-height: 1.15;
+            margin-bottom: 16px;
+            letter-spacing: -0.03em;
+            animation: fadeInDown 0.7s ease 0.1s both;
+        }
+
+        .hero h1 .highlight {
+            background: linear-gradient(135deg, #c3c0ff 0%, #93c5fd 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .hero p {
+            font-size: 1.1rem;
+            color: rgba(255,255,255,0.8);
+            max-width: 600px;
+            margin: 0 auto 32px;
+            line-height: 1.6;
+            animation: fadeInDown 0.7s ease 0.2s both;
+        }
+
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.7s ease 0.3s both;
+        }
+
+        .hero-stat {
+            text-align: center;
+        }
+
+        .hero-stat-value {
+            font-size: 1.8rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-stat-label {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.65);
+            font-weight: 400;
+        }
+
+        /* ========== ANIMATIONS ========== */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInLeft {
+            from { opacity: 0; transform: translateX(-24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(24px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.6s ease;
+        }
+
+        .fade-in-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ========== NAVIGATION ========== */
+        .toc {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--outline-variant);
+            padding: 0;
+        }
+
+        .toc-inner {
+            max-width: 1100px;
+            margin: 0 auto;
+            display: flex;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+            gap: 0;
+        }
+
+        .toc-inner::-webkit-scrollbar { display: none; }
+
+        .toc-link {
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 14px 18px;
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--on-surface-variant);
+            border-bottom: 2px solid transparent;
+            transition: all 0.25s ease;
+            white-space: nowrap;
+        }
+
+        .toc-link:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .toc-link.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+        }
+
+        .toc-link .toc-icon {
+            font-size: 1rem;
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        /* ========== SECTION ========== */
+        .section {
+            padding: 80px 0;
+        }
+
+        .section:nth-child(even) {
+            background: var(--surface-dim);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 56px;
+        }
+
+        .section-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .section-number.ui { background: var(--primary-light); color: var(--primary); }
+        .section-number.chatbot { background: var(--secondary-light); color: var(--secondary); }
+        .section-number.security { background: var(--success-light); color: #16a34a; }
+        .section-number.prompt { background: var(--tertiary-light); color: var(--tertiary); }
+        .section-number.tutor { background: #f3e8ff; color: #7c3aed; }
+        .section-number.quiz { background: #fce7f3; color: #be185d; }
+        .section-number.admin { background: #e0f2fe; color: #0369a1; }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--on-surface);
+            margin-bottom: 12px;
+        }
+
+        .section-subtitle {
+            font-size: 1.05rem;
+            color: var(--on-surface-variant);
+            max-width: 620px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        /* ========== FEATURE CARDS ========== */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 24px;
+        }
+
+        .feature-card {
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            padding: 28px;
+            border: 1px solid var(--outline-variant);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-4px);
+            border-color: var(--primary-dim);
+        }
+
+        .feature-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-dim));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover::after {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-bottom: 16px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--on-surface);
+        }
+
+        .feature-card p {
+            font-size: 0.92rem;
+            color: var(--on-surface-variant);
+            line-height: 1.65;
+        }
+
+        /* ========== HIGHLIGHT BOX ========== */
+        .highlight-box {
+            background: linear-gradient(135deg, var(--primary-light) 0%, #ede9fe 100%);
+            border: 1px solid var(--primary-dim);
+            border-radius: var(--radius-xl);
+            padding: 32px;
+            margin: 32px 0;
+        }
+
+        .highlight-box h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .highlight-box p, .highlight-box li {
+            font-size: 0.92rem;
+            color: var(--on-surface);
+            line-height: 1.7;
+        }
+
+        .highlight-box ul {
+            padding-left: 20px;
+            margin-top: 8px;
+        }
+
+        .highlight-box li {
+            margin-bottom: 6px;
+        }
+
+        /* ========== CHAT DEMO ========== */
+        .chat-demo {
+            max-width: 460px;
+            margin: 40px auto 0;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--outline-variant);
+            box-shadow: var(--shadow-modal);
+            overflow: hidden;
+        }
+
+        .chat-demo-header {
+            background: linear-gradient(135deg, var(--primary) 0%, #6366f1 100%);
+            color: white;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .chat-demo-avatar {
+            width: 36px;
+            height: 36px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .chat-demo-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .chat-demo-info span {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.75);
+        }
+
+        .chat-demo-body {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            min-height: 200px;
+        }
+
+        .chat-msg {
+            max-width: 85%;
+            padding: 12px 16px;
+            border-radius: 16px;
+            font-size: 0.88rem;
+            line-height: 1.5;
+        }
+
+        .chat-msg.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: 4px;
+        }
+
+        .chat-msg.bot {
+            align-self: flex-start;
+            background: var(--surface-dim);
+            color: var(--on-surface);
+            border-bottom-left-radius: 4px;
+        }
+
+        .chat-demo-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 16px;
+            border-top: 1px solid var(--outline-variant);
+        }
+
+        .chat-demo-input input {
+            flex: 1;
+            border: 1px solid var(--outline-variant);
+            border-radius: 999px;
+            padding: 10px 16px;
+            font-size: 0.85rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+
+        .chat-demo-input input:focus {
+            border-color: var(--primary);
+        }
+
+        .chat-demo-input button {
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            border: none;
+            background: var(--primary);
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chat-demo-input button:hover {
+            background: var(--primary-hover);
+        }
+
+        /* ========== COMPARISON TABLE ========== */
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 32px 0;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+        }
+
+        .comparison-table th {
+            background: var(--inverse-surface);
+            color: white;
+            padding: 14px 20px;
+            text-align: left;
+            font-size: 0.88rem;
+            font-weight: 600;
+        }
+
+        .comparison-table td {
+            padding: 14px 20px;
+            font-size: 0.88rem;
+            border-bottom: 1px solid var(--outline-variant);
+            background: var(--surface);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .comparison-table tr:hover td {
+            background: var(--surface-dim);
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.01em;
+        }
+
+        .badge-new {
+            background: var(--primary-light);
+            color: var(--primary);
+        }
+
+        .badge-improved {
+            background: var(--success-light);
+            color: #16a34a;
+        }
+
+        .badge-security {
+            background: var(--error-light);
+            color: var(--error);
+        }
+
+        /* ========== SECURITY SHIELD ========== */
+        .security-layers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .security-layer {
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .security-layer:hover {
+            border-color: #22c55e;
+            box-shadow: 0 4px 20px rgba(34, 197, 94, 0.1);
+        }
+
+        .security-layer .layer-icon {
+            font-size: 2rem;
+            margin-bottom: 12px;
+        }
+
+        .security-layer h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .security-layer p {
+            font-size: 0.82rem;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+        }
+
+        /* ========== PROMPT LIBRARY ========== */
+        .prompt-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+            margin-top: 32px;
+        }
+
+        .prompt-card-demo {
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-xl);
+            padding: 24px;
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .prompt-card-demo:hover {
+            border-color: var(--primary);
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .prompt-card-demo .prompt-tool {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--secondary);
+            background: var(--secondary-light);
+            padding: 3px 10px;
+            border-radius: 999px;
+            margin-bottom: 12px;
+        }
+
+        .prompt-card-demo h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 6px;
+        }
+
+        .prompt-card-demo .prompt-desc {
+            font-size: 0.85rem;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+
+        .prompt-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-bottom: 12px;
+        }
+
+        .prompt-tag {
+            background: var(--primary-light);
+            color: var(--primary);
+            padding: 2px 8px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 600;
+        }
+
+        .prompt-copy-count {
+            font-size: 0.78rem;
+            color: var(--outline);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* ========== QUIZ / LEARNING ========== */
+        .quiz-demo {
+            max-width: 560px;
+            margin: 40px auto 0;
+            background: var(--surface);
+            border-radius: var(--radius-xl);
+            border: 1px solid var(--outline-variant);
+            box-shadow: var(--shadow-modal);
+            overflow: hidden;
+        }
+
+        .quiz-demo-header {
+            background: linear-gradient(135deg, #be185d 0%, #ec4899 100%);
+            color: white;
+            padding: 20px 24px;
+        }
+
+        .quiz-demo-header h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .quiz-demo-header span {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.8);
+        }
+
+        .quiz-demo-body {
+            padding: 24px;
+        }
+
+        .quiz-question {
+            font-size: 0.95rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+            line-height: 1.5;
+        }
+
+        .quiz-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-md);
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.88rem;
+        }
+
+        .quiz-option:hover {
+            border-color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .quiz-option.correct {
+            border-color: var(--success);
+            background: var(--success-light);
+        }
+
+        .quiz-option .radio {
+            width: 18px;
+            height: 18px;
+            border: 2px solid var(--outline);
+            border-radius: 50%;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .quiz-option.correct .radio {
+            border-color: var(--success);
+            background: var(--success);
+        }
+
+        .quiz-option.correct .radio::after {
+            content: '✓';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .quiz-footer {
+            padding: 16px 24px;
+            border-top: 1px solid var(--outline-variant);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .quiz-progress {
+            font-size: 0.82rem;
+            color: var(--on-surface-variant);
+        }
+
+        .quiz-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 999px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .quiz-btn:hover {
+            background: var(--primary-hover);
+        }
+
+        /* ========== ADMIN IMPROVEMENTS ========== */
+        .admin-feature-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 32px;
+        }
+
+        .admin-feature-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 16px;
+            background: var(--surface);
+            border: 1px solid var(--outline-variant);
+            border-radius: var(--radius-lg);
+            padding: 20px 24px;
+            transition: all 0.3s ease;
+        }
+
+        .admin-feature-item:hover {
+            box-shadow: var(--shadow-card);
+            border-color: var(--primary-dim);
+        }
+
+        .admin-feature-item .admin-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            background: #e0f2fe;
+        }
+
+        .admin-feature-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .admin-feature-item p {
+            font-size: 0.85rem;
+            color: var(--on-surface-variant);
+            line-height: 1.5;
+        }
+
+        /* ========== FLOW / TIMELINE ========== */
+        .flow-steps {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+            margin-top: 32px;
+            position: relative;
+        }
+
+        .flow-steps::before {
+            content: '';
+            position: absolute;
+            left: 23px;
+            top: 24px;
+            bottom: 24px;
+            width: 2px;
+            background: linear-gradient(to bottom, var(--primary), var(--primary-dim), var(--outline-variant));
+        }
+
+        .flow-step {
+            display: flex;
+            align-items: flex-start;
+            gap: 20px;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .flow-step-dot {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.9rem;
+            flex-shrink: 0;
+            z-index: 1;
+            box-shadow: 0 0 0 4px var(--background);
+        }
+
+        .flow-step-content h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .flow-step-content p {
+            font-size: 0.88rem;
+            color: var(--on-surface-variant);
+            line-height: 1.6;
+        }
+
+        /* ========== FOOTER ========== */
+        .doc-footer {
+            background: var(--inverse-surface);
+            color: rgba(255,255,255,0.7);
+            padding: 48px 24px;
+            text-align: center;
+        }
+
+        .doc-footer h3 {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 12px;
+        }
+
+        .doc-footer p {
+            font-size: 0.9rem;
+            max-width: 500px;
+            margin: 0 auto 24px;
+            line-height: 1.6;
+        }
+
+        .footer-meta {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.4);
+            margin-top: 32px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        /* ========== DIVIDER ========== */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--outline-variant), transparent);
+            margin: 0;
+        }
+
+        /* ========== CHECK LIST ========== */
+        .check-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .check-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            padding: 8px 0;
+            font-size: 0.92rem;
+            line-height: 1.6;
+        }
+
+        .check-list li::before {
+            content: '✓';
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--success-light);
+            color: #16a34a;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        /* ========== USER STORY QUOTE ========== */
+        .user-story {
+            background: linear-gradient(135deg, #faf5ff 0%, #ede9fe 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 var(--radius-lg) var(--radius-lg) 0;
+            padding: 24px 28px;
+            margin: 28px 0;
+            position: relative;
+        }
+
+        .user-story::before {
+            content: '"';
+            position: absolute;
+            top: 8px;
+            left: 12px;
+            font-size: 3rem;
+            color: var(--primary-dim);
+            font-family: Georgia, serif;
+            line-height: 1;
+        }
+
+        .user-story p {
+            font-size: 0.95rem;
+            font-style: italic;
+            color: var(--on-surface);
+            line-height: 1.7;
+            padding-left: 24px;
+        }
+
+        .user-story .user-story-author {
+            font-style: normal;
+            font-size: 0.82rem;
+            color: var(--on-surface-variant);
+            margin-top: 8px;
+            padding-left: 24px;
+            font-weight: 600;
+        }
+
+        /* ========== RESPONSIVE ========== */
+        @media (max-width: 768px) {
+            .hero { padding: 56px 16px 72px; }
+            .hero-stats { gap: 24px; }
+            .section { padding: 56px 0; }
+            .section-header { margin-bottom: 40px; }
+            .features-grid { grid-template-columns: 1fr; }
+            .security-layers { grid-template-columns: 1fr 1fr; }
+            .prompt-showcase { grid-template-columns: 1fr; }
+            .comparison-table { font-size: 0.82rem; }
+            .comparison-table th, .comparison-table td { padding: 10px 14px; }
+            .toc-link { padding: 12px 14px; font-size: 0.8rem; }
+        }
+
+        @media (max-width: 480px) {
+            .security-layers { grid-template-columns: 1fr; }
+            .hero-stats { flex-direction: column; gap: 16px; }
+        }
+
+        /* ========== PRINT ========== */
+        @media print {
+            .toc { display: none; }
+            .hero { padding: 40px 24px; }
+            .section { padding: 40px 0; }
+            .feature-card, .security-layer, .prompt-card-demo, .admin-feature-item {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero">
+    <div class="hero-content">
+        <div class="hero-badge">
+            🚀 Phiên bản cập nhật 2026
+        </div>
+        <h1>
+            Những Cải Tiến Mới Trên <br>
+            <span class="highlight">Nền Tảng Sudemy</span>
+        </h1>
+        <p>
+            Tài liệu mô tả chi tiết các nâng cấp về giao diện, trí tuệ nhân tạo, bảo mật 
+            và trải nghiệm học tập — từ góc nhìn của người dùng.
+        </p>
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-value">7</div>
+                <div class="hero-stat-label">Hạng mục cải tiến</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">100+</div>
+                <div class="hero-stat-label">Prompt AI miễn phí</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-value">24/7</div>
+                <div class="hero-stat-label">AI Chatbot hỗ trợ</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ TABLE OF CONTENTS ═══════════════════ -->
+<nav class="toc" id="toc">
+    <div class="toc-inner">
+        <a href="#ui" class="toc-link"><span class="toc-icon">🎨</span> Giao diện</a>
+        <a href="#chatbot" class="toc-link"><span class="toc-icon">💬</span> AI Tư vấn</a>
+        <a href="#security" class="toc-link"><span class="toc-icon">🔒</span> Bảo mật</a>
+        <a href="#prompt-library" class="toc-link"><span class="toc-icon">📚</span> Thư viện Prompt</a>
+        <a href="#ai-tutor" class="toc-link"><span class="toc-icon">🤖</span> AI Trợ lý học</a>
+        <a href="#quiz" class="toc-link"><span class="toc-icon">📝</span> Quiz sau bài học</a>
+        <a href="#admin" class="toc-link"><span class="toc-icon">⚙️</span> Trang Admin</a>
+    </div>
+</nav>
+
+<!-- ═══════════════════ 1. GIAO DIỆN ═══════════════════ -->
+<section class="section" id="ui">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number ui">01</div>
+            <h2 class="section-title">Giao Diện Hiện Đại & Tinh Tế</h2>
+            <p class="section-subtitle">
+                Giao diện được thiết kế lại hoàn toàn theo phong cách tối giản, cao cấp — 
+                lấy cảm hứng từ những nền tảng hàng đầu như Linear, Vercel, Stripe.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Mình vào trang chủ Sudemy lần đầu và ấn tượng ngay với thiết kế gọn gàng, hiện đại. 
+               Mọi thứ rõ ràng, không rối mắt, dễ tìm khóa học và prompt AI ngay lập tức.</p>
+            <div class="user-story-author">— Nguyễn Minh Anh, sinh viên năm 3</div>
+        </div>
+
+        <div class="features-grid fade-in-section">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--primary-light);">🌓</div>
+                <h3>Dark Mode / Light Mode</h3>
+                <p>Chuyển đổi giữa chế độ sáng và tối chỉ với một cú nhấp. Mắt bạn được bảo vệ khi học vào ban đêm, 
+                   và giao diện luôn đẹp trong mọi điều kiện ánh sáng.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: #ede9fe;">📱</div>
+                <h3>Responsive — Mobile First</h3>
+                <p>Dù bạn dùng điện thoại, tablet hay laptop — giao diện tự động thích ứng hoàn hảo. 
+                   Học mọi lúc, mọi nơi mà không lo giao diện bị vỡ hay khó thao tác.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--tertiary-light);">✨</div>
+                <h3>Micro-Animations Mượt Mà</h3>
+                <p>Các hiệu ứng hover, chuyển trang, và loading được thiết kế mượt mà bằng Framer Motion — 
+                   tạo cảm giác chuyên nghiệp và sống động khi tương tác.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--secondary-light);">🎨</div>
+                <h3>Design System "Intellectual Clarity"</h3>
+                <p>Hệ thống màu sắc Indigo thống nhất, typography Inter rõ ràng, và khoảng trắng hài hòa — 
+                   tạo nên trải nghiệm đọc và học tập dễ chịu cho mắt.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--success-light);">🏷️</div>
+                <h3>White-label Ready</h3>
+                <p>Admin có thể thay đổi logo, tên nền tảng, màu chủ đạo ngay trên giao diện quản trị — 
+                   không cần chỉnh code. Phù hợp nếu bạn muốn xây dựng thương hiệu riêng.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: #fce7f3;">⚡</div>
+                <h3>Tốc Độ Tải Trang Nhanh</h3>
+                <p>Xây dựng trên React 19 + Vite, trang tải gần như tức thì. Không còn cảnh chờ đợi màn hình trắng — 
+                   vào học ngay, tiết kiệm thời gian.</p>
+            </div>
+        </div>
+
+        <div class="highlight-box fade-in-section">
+            <h4>💡 Điểm nhấn thiết kế</h4>
+            <ul class="check-list">
+                <li>Bảng màu Indigo (#4F46E5) — chuyên nghiệp, hiện đại, dễ nhìn</li>
+                <li>Font chữ Inter — hỗ trợ hoàn hảo tiếng Việt có dấu</li>
+                <li>Shadow mềm mại, không nặng nề — cảm giác "floating" nhẹ nhàng</li>
+                <li>Hệ thống 5 breakpoint responsive: mobile, tablet, laptop, desktop, widescreen</li>
+                <li>Hiệu ứng hover trên card khóa học hiển thị preview chi tiết</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ 2. AI CHATBOT TƯ VẤN ═══════════════════ -->
+<section class="section" id="chatbot">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number chatbot">02</div>
+            <h2 class="section-title">AI Chatbot Tư Vấn Khách Hàng</h2>
+            <p class="section-subtitle">
+                Chatbot AI thông minh hoạt động 24/7, sẵn sàng tư vấn khóa học, giải đáp thắc mắc 
+                và hướng dẫn bạn tìm đúng nội dung phù hợp.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Mình không biết nên bắt đầu học AI từ khóa nào. Chatbot trên Sudemy hỏi mình vài câu về 
+               nhu cầu và trình độ, rồi gợi ý ngay khóa "ChatGPT cho dân văn phòng" — đúng thứ mình cần!</p>
+            <div class="user-story-author">— Trần Hữu Đạt, nhân viên marketing</div>
+        </div>
+
+        <div class="features-grid fade-in-section">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--secondary-light);">🕐</div>
+                <h3>Hoạt Động 24/7</h3>
+                <p>Bất kể bạn truy cập lúc nào — nửa đêm hay sáng sớm — chatbot luôn sẵn sàng phản hồi tức thì, 
+                   không cần chờ nhân viên trực.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: #ede9fe;">🎯</div>
+                <h3>Tư Vấn Cá Nhân Hóa</h3>
+                <p>AI phân tích nhu cầu, trình độ và mục tiêu của bạn để gợi ý khóa học phù hợp nhất — 
+                   không phải xem hàng chục khóa học để tự chọn.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--success-light);">🇻🇳</div>
+                <h3>Hỗ Trợ Tiếng Việt</h3>
+                <p>Chatbot giao tiếp hoàn toàn bằng tiếng Việt tự nhiên, hiểu được cả ngôn ngữ thường ngày — 
+                   bạn hỏi gì cũng được, không cần dùng từ chuyên ngành.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--tertiary-light);">📋</div>
+                <h3>Giải Đáp Chính Sách</h3>
+                <p>Hỏi về giá cả, chương trình giảm giá, chính sách hoàn tiền, hay cách thanh toán — 
+                   chatbot trả lời nhanh gọn, chính xác.</p>
+            </div>
+        </div>
+
+        <!-- Chat Demo -->
+        <div class="chat-demo fade-in-section">
+            <div class="chat-demo-header">
+                <div class="chat-demo-avatar">🤖</div>
+                <div class="chat-demo-info">
+                    <h4>Sudemy AI Assistant</h4>
+                    <span>🟢 Đang hoạt động</span>
+                </div>
+            </div>
+            <div class="chat-demo-body">
+                <div class="chat-msg user">Mình muốn học cách tạo hình ảnh bằng AI, nên bắt đầu từ đâu?</div>
+                <div class="chat-msg bot">
+                    Chào bạn! 👋 Để tạo hình ảnh bằng AI, mình gợi ý bạn 2 lựa chọn:
+                    <br><br>
+                    <strong>1. NanoBanana</strong> — Miễn phí, dễ dùng, phù hợp người mới<br>
+                    <strong>2. Canva AI</strong> — Thiết kế chuyên nghiệp hơn, có sẵn template
+                    <br><br>
+                    Bạn muốn mình giới thiệu khóa học nào? 😊
+                </div>
+                <div class="chat-msg user">Mình chọn NanoBanana nhé!</div>
+                <div class="chat-msg bot">
+                    Tuyệt vời! 🎨 Khóa <strong>"NanoBanana từ Zero đến Pro"</strong> rất phù hợp cho bạn. 
+                    Chỉ 1.5 giờ thực hành, bạn sẽ tự tạo được hình ảnh sản phẩm đẹp!
+                </div>
+            </div>
+            <div class="chat-demo-input">
+                <input type="text" placeholder="Nhập tin nhắn..." disabled>
+                <button>➤</button>
+            </div>
+        </div>
+
+        <div class="highlight-box fade-in-section" style="margin-top: 32px;">
+            <h4>⚡ Công nghệ đằng sau</h4>
+            <p>Chatbot tư vấn sử dụng <strong>Google Gemini API</strong>, được huấn luyện với dữ liệu khóa học 
+            và prompt của Sudemy — đảm bảo câu trả lời chính xác và phù hợp ngữ cảnh.</p>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ 3. BẢO MẬT ═══════════════════ -->
+<section class="section" id="security">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number security">03</div>
+            <h2 class="section-title">Bảo Mật Nhiều Lớp</h2>
+            <p class="section-subtitle">
+                Thông tin cá nhân và giao dịch thanh toán của bạn được bảo vệ bởi nhiều lớp bảo mật 
+                theo tiêu chuẩn quốc tế.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Mình yên tâm khi thanh toán trên Sudemy vì biết họ dùng Firebase Auth của Google để xác thực, 
+               và hệ thống thanh toán PayOS có xác minh chữ ký số. Dữ liệu cá nhân được mã hóa, 
+               không lo bị rò rỉ.</p>
+            <div class="user-story-author">— Lê Thị Hương, freelancer</div>
+        </div>
+
+        <div class="security-layers fade-in-section">
+            <div class="security-layer">
+                <div class="layer-icon">🛡️</div>
+                <h4>Xác Thực Firebase</h4>
+                <p>Đăng nhập an toàn qua Google hoặc Email, xác minh danh tính bằng Firebase Auth — 
+                   công nghệ của Google.</p>
+            </div>
+
+            <div class="security-layer">
+                <div class="layer-icon">🔐</div>
+                <h4>Mã Hóa Dữ Liệu</h4>
+                <p>Mọi dữ liệu truyền tải được mã hóa TLS. Mật khẩu không bao giờ lưu trên server — 
+                   Firebase xử lý hoàn toàn.</p>
+            </div>
+
+            <div class="security-layer">
+                <div class="layer-icon">🧱</div>
+                <h4>Chống Tấn Công</h4>
+                <p>Hệ thống tự động giới hạn số lần đăng nhập sai (Rate Limiting), 
+                   chặn brute force và spam tự động.</p>
+            </div>
+
+            <div class="security-layer">
+                <div class="layer-icon">💳</div>
+                <h4>Thanh Toán An Toàn</h4>
+                <p>Xác minh chữ ký PayOS Webhook, khóa idempotency chống trùng giao dịch, 
+                   ghi log đầy đủ để kiểm toán.</p>
+            </div>
+
+            <div class="security-layer">
+                <div class="layer-icon">🧹</div>
+                <h4>Lọc Dữ Liệu Đầu Vào</h4>
+                <p>Mọi thông tin bạn nhập đều được kiểm tra bằng Zod & DOMPurify — 
+                   chặn mã độc XSS và NoSQL Injection.</p>
+            </div>
+
+            <div class="security-layer">
+                <div class="layer-icon">🔑</div>
+                <h4>Phân Quyền Nghiêm Ngặt</h4>
+                <p>3 cấp quyền (Admin, Editor, Moderator) — mỗi vai trò chỉ truy cập đúng phần mình quản lý, 
+                   không ai vượt quyền.</p>
+            </div>
+        </div>
+
+        <table class="comparison-table fade-in-section" style="margin-top: 40px;">
+            <thead>
+                <tr>
+                    <th>Lớp bảo vệ</th>
+                    <th>Công nghệ sử dụng</th>
+                    <th>Bảo vệ khỏi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>Xác thực</strong></td>
+                    <td>Firebase Auth (Google + Email)</td>
+                    <td>Truy cập trái phép, giả mạo danh tính</td>
+                </tr>
+                <tr>
+                    <td><strong>Validate đầu vào</strong></td>
+                    <td>Zod (Frontend + Backend)</td>
+                    <td>Dữ liệu không hợp lệ, injection</td>
+                </tr>
+                <tr>
+                    <td><strong>Chống XSS</strong></td>
+                    <td>DOMPurify + Helmet CSP</td>
+                    <td>Chèn mã độc qua nội dung HTML</td>
+                </tr>
+                <tr>
+                    <td><strong>Chống NoSQL Injection</strong></td>
+                    <td>mongo-sanitize</td>
+                    <td>Tấn công database qua query</td>
+                </tr>
+                <tr>
+                    <td><strong>Rate Limiting</strong></td>
+                    <td>express-rate-limit</td>
+                    <td>Brute force, spam đăng nhập</td>
+                </tr>
+                <tr>
+                    <td><strong>HTTP Security</strong></td>
+                    <td>Helmet middleware</td>
+                    <td>Clickjacking, MIME sniffing</td>
+                </tr>
+                <tr>
+                    <td><strong>Thanh toán</strong></td>
+                    <td>PayOS Webhook Signature + Idempotency</td>
+                    <td>Giao dịch giả mạo, trùng lặp</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ═══════════════════ 4. THƯ VIỆN PROMPT ═══════════════════ -->
+<section class="section" id="prompt-library">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number prompt">04</div>
+            <h2 class="section-title">Thư Viện Prompt AI Miễn Phí</h2>
+            <p class="section-subtitle">
+                Thay vì blog truyền thống, Sudemy xây dựng <strong>Thư viện Prompt AI</strong> — 
+                nơi bạn có thể tìm kiếm, sao chép và sử dụng ngay hàng trăm prompt AI thực tế, 
+                hoàn toàn miễn phí và không cần đăng ký.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Mình tìm trên Google "prompt tạo ảnh sản phẩm bằng AI" và ra ngay trang Sudemy. 
+               Copy prompt về dùng luôn, không cần đăng ký gì cả. Sau đó thấy hay quá nên đăng ký học khóa 
+               NanoBanana luôn!</p>
+            <div class="user-story-author">— Phạm Văn Khoa, chủ shop online</div>
+        </div>
+
+        <div class="highlight-box fade-in-section">
+            <h4>🎯 Tại sao Thư viện Prompt thay vì Blog?</h4>
+            <ul class="check-list">
+                <li><strong>Giá trị tức thì:</strong> Người dùng copy prompt và dùng ngay, không phải đọc bài viết dài rồi mới áp dụng được</li>
+                <li><strong>SEO mạnh mẽ:</strong> Mỗi prompt có URL riêng (ví dụ: <code>sudemy.vn/prompts/tao-hinh-anh-san-pham-nanobanana</code>) — Google index từng trang</li>
+                <li><strong>Thu hút đúng đối tượng:</strong> Người tìm prompt AI chính là người có nhu cầu học sử dụng AI — đúng khách hàng mục tiêu</li>
+                <li><strong>Không rào cản:</strong> Xem và copy hoàn toàn miễn phí, không cần đăng ký — tạo niềm tin trước khi mua khóa học</li>
+                <li><strong>CTA tự nhiên:</strong> Mỗi prompt đều có link gợi ý đến khóa học liên quan — chuyển đổi mượt mà</li>
+            </ul>
+        </div>
+
+        <!-- Prompt Card Showcase -->
+        <div class="prompt-showcase fade-in-section">
+            <div class="prompt-card-demo">
+                <div class="prompt-tool">🎨 NanoBanana</div>
+                <h4>Tạo Hình Ảnh Sản Phẩm Chuyên Nghiệp</h4>
+                <p class="prompt-desc">Prompt giúp tạo ảnh sản phẩm nền trắng, góc chụp studio chuyên nghiệp cho shop online.</p>
+                <div class="prompt-tags">
+                    <span class="prompt-tag">marketing</span>
+                    <span class="prompt-tag">e-commerce</span>
+                    <span class="prompt-tag">hình ảnh</span>
+                </div>
+                <div class="prompt-copy-count">📋 2,847 lượt copy</div>
+            </div>
+
+            <div class="prompt-card-demo">
+                <div class="prompt-tool">💬 ChatGPT</div>
+                <h4>Viết Email Marketing Thu Hút</h4>
+                <p class="prompt-desc">Prompt tạo email quảng cáo sản phẩm với tiêu đề gây tò mò, nội dung thuyết phục.</p>
+                <div class="prompt-tags">
+                    <span class="prompt-tag">content-writing</span>
+                    <span class="prompt-tag">marketing</span>
+                </div>
+                <div class="prompt-copy-count">📋 1,523 lượt copy</div>
+            </div>
+
+            <div class="prompt-card-demo">
+                <div class="prompt-tool">✨ Gemini</div>
+                <h4>Phân Tích Dữ Liệu Bán Hàng</h4>
+                <p class="prompt-desc">Prompt giúp phân tích bảng dữ liệu bán hàng, tìm xu hướng và đưa ra đề xuất cải thiện.</p>
+                <div class="prompt-tags">
+                    <span class="prompt-tag">phân tích</span>
+                    <span class="prompt-tag">kinh doanh</span>
+                </div>
+                <div class="prompt-copy-count">📋 986 lượt copy</div>
+            </div>
+
+            <div class="prompt-card-demo">
+                <div class="prompt-tool">🎬 CapCut AI</div>
+                <h4>Script Video Quảng Cáo 30 Giây</h4>
+                <p class="prompt-desc">Prompt tạo kịch bản video quảng cáo ngắn, bắt mắt cho TikTok và Instagram Reels.</p>
+                <div class="prompt-tags">
+                    <span class="prompt-tag">video</span>
+                    <span class="prompt-tag">social-media</span>
+                </div>
+                <div class="prompt-copy-count">📋 1,204 lượt copy</div>
+            </div>
+        </div>
+
+        <div class="highlight-box fade-in-section" style="margin-top: 32px; background: linear-gradient(135deg, var(--tertiary-light) 0%, #fef3c7 100%); border-color: #f59e0b;">
+            <h4 style="color: var(--tertiary);">📂 Hệ thống Tag thông minh</h4>
+            <p>Mỗi prompt được gắn 2 loại tag để bạn dễ dàng tìm kiếm:</p>
+            <ul class="check-list">
+                <li><strong>Tag theo công cụ AI:</strong> NanoBanana, ChatGPT, Gemini, Canva AI, CapCut AI...</li>
+                <li><strong>Tag theo mục đích sử dụng:</strong> marketing, hình ảnh sản phẩm, viết nội dung, học tập, phân tích...</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ 5. AI TRỢ LÝ HỌC ═══════════════════ -->
+<section class="section" id="ai-tutor">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number tutor">05</div>
+            <h2 class="section-title">AI Trợ Lý Học Tập</h2>
+            <p class="section-subtitle">
+                Chatbot AI tích hợp ngay trong giao diện học, hiểu ngữ cảnh bài học bạn đang xem — 
+                như có một gia sư riêng luôn sẵn sàng bên cạnh.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Đang xem video hướng dẫn Canva AI, mình không hiểu bước "thay đổi background bằng AI". 
+               Hỏi chatbot ngay trong trang học, nó giải thích từng bước cụ thể — vì nó biết mình đang học bài nào! 
+               Khỏi cần tua lại video hay Google thêm.</p>
+            <div class="user-story-author">— Đỗ Quốc Bảo, sinh viên thiết kế</div>
+        </div>
+
+        <div class="features-grid fade-in-section">
+            <div class="feature-card">
+                <div class="feature-icon" style="background: #f3e8ff;">🧠</div>
+                <h3>Hiểu Ngữ Cảnh Bài Học</h3>
+                <p>AI biết bạn đang học bài nào, khóa nào — nên câu trả lời luôn chính xác và liên quan đến 
+                   nội dung bạn đang xem, không phải câu trả lời chung chung.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--secondary-light);">💡</div>
+                <h3>Giải Đáp Mọi Thắc Mắc</h3>
+                <p>Không hiểu một khái niệm? Muốn biết thêm ví dụ thực tế? Cần hướng dẫn chi tiết hơn? 
+                   Chỉ cần hỏi, AI trả lời ngay — bằng tiếng Việt dễ hiểu.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--primary-light);">🔄</div>
+                <h3>Hỏi Không Giới Hạn (Pro)</h3>
+                <p>Người dùng miễn phí được hỏi một số câu mỗi ngày. Nâng cấp lên Pro để hỏi không giới hạn — 
+                   học sâu hơn, nhanh hơn.</p>
+            </div>
+
+            <div class="feature-card">
+                <div class="feature-icon" style="background: var(--success-light);">📍</div>
+                <h3>Ngay Trong Giao Diện Học</h3>
+                <p>Không cần mở tab mới hay chuyển ứng dụng. Chatbot AI nằm ngay bên cạnh video bài học — 
+                   hỏi và học liền mạch, không bị gián đoạn.</p>
+            </div>
+        </div>
+
+        <!-- AI Tutor Demo Chat -->
+        <div class="chat-demo fade-in-section" style="max-width: 500px;">
+            <div class="chat-demo-header" style="background: linear-gradient(135deg, #7c3aed, #a78bfa);">
+                <div class="chat-demo-avatar">🎓</div>
+                <div class="chat-demo-info">
+                    <h4>AI Trợ Lý Học Tập</h4>
+                    <span>📖 Đang học: Canva AI — Bài 3: Xóa nền ảnh</span>
+                </div>
+            </div>
+            <div class="chat-demo-body">
+                <div class="chat-msg user">Mình không hiểu tại sao xóa nền bị mất phần tóc, có cách nào khắc phục không?</div>
+                <div class="chat-msg bot">
+                    Trong bài học này, bước xóa nền bằng Canva AI đôi khi gặp vấn đề với tóc mảnh hoặc phụ kiện nhỏ. Bạn thử:
+                    <br><br>
+                    <strong>1.</strong> Dùng công cụ <em>"Restore"</em> để vẽ lại phần bị mất<br>
+                    <strong>2.</strong> Zoom vào và chỉnh sửa thủ công ở viền tóc<br>
+                    <strong>3.</strong> Thử chụp ảnh gốc với nền đơn sắc để AI nhận diện tốt hơn
+                    <br><br>
+                    Bạn thử bước 1 trước xem nhé! 💪
+                </div>
+            </div>
+            <div class="chat-demo-input">
+                <input type="text" placeholder="Hỏi về bài học đang xem..." disabled>
+                <button>➤</button>
+            </div>
+        </div>
+
+        <div class="highlight-box fade-in-section" style="margin-top: 32px; background: linear-gradient(135deg, #f3e8ff, #ede9fe); border-color: #a78bfa;">
+            <h4 style="color: #7c3aed;">🤖 So sánh: Chatbot Tư Vấn vs AI Trợ Lý Học</h4>
+            <table class="comparison-table" style="margin: 16px 0 0; box-shadow: none;">
+                <thead>
+                    <tr>
+                        <th>Tiêu chí</th>
+                        <th>💬 Chatbot Tư Vấn</th>
+                        <th>🎓 AI Trợ Lý Học</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Vị trí</strong></td>
+                        <td>Trang chủ, trang khóa học</td>
+                        <td>Bên trong giao diện học (Course Player)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Mục đích</strong></td>
+                        <td>Tư vấn chọn khóa, giải đáp chính sách</td>
+                        <td>Hỗ trợ nội dung bài học đang xem</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Ngữ cảnh</strong></td>
+                        <td>Biết thông tin khóa học, giá cả</td>
+                        <td>Biết bạn đang học bài nào, ở đâu</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Đối tượng</strong></td>
+                        <td>Khách chưa mua khóa học</td>
+                        <td>Học viên đang trong quá trình học</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ 6. QUIZ SAU BÀI HỌC ═══════════════════ -->
+<section class="section" id="quiz">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number quiz">06</div>
+            <h2 class="section-title">Câu Hỏi Kiểm Tra Sau Mỗi Bài Học</h2>
+            <p class="section-subtitle">
+                Sau mỗi bài học, bạn sẽ trả lời các câu hỏi trắc nghiệm ngắn để củng cố kiến thức — 
+                đạt từ 70% trở lên mới tính là hoàn thành bài.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Xem video xong tưởng hiểu rồi, nhưng làm quiz thì phát hiện mình hiểu sai một bước quan trọng. 
+               May mà có quiz nên mình sửa lại được, chứ không thì đi làm thực tế sẽ sai hết!</p>
+            <div class="user-story-author">— Nguyễn Thanh Tùng, nhân viên kinh doanh</div>
+        </div>
+
+        <!-- Flow Steps -->
+        <div class="flow-steps fade-in-section">
+            <div class="flow-step">
+                <div class="flow-step-dot">1</div>
+                <div class="flow-step-content">
+                    <h4>Xem Video Bài Học</h4>
+                    <p>Bạn xem video hướng dẫn thực hành trên YouTube được nhúng trực tiếp vào giao diện học. 
+                       Sidebar bên cạnh hiển thị danh sách bài, đánh dấu bài đã hoàn thành.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-step-dot">2</div>
+                <div class="flow-step-content">
+                    <h4>Làm Bài Kiểm Tra Trắc Nghiệm</h4>
+                    <p>Sau khi xem xong, một modal quiz hiện lên với 3-5 câu hỏi trắc nghiệm (3-4 đáp án, 1 đáp án đúng). 
+                       Câu hỏi do Admin/Editor tạo sẵn, liên quan trực tiếp đến nội dung vừa học.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-step-dot">3</div>
+                <div class="flow-step-content">
+                    <h4>Xem Kết Quả & Phản Hồi</h4>
+                    <p>Hệ thống chấm điểm ngay lập tức. Đạt <strong>≥ 70%</strong> → bài học được đánh dấu hoàn thành. 
+                       Chưa đạt? Bạn có thể xem lại video và thử lại — không giới hạn số lần.</p>
+                </div>
+            </div>
+            <div class="flow-step">
+                <div class="flow-step-dot">4</div>
+                <div class="flow-step-content">
+                    <h4>Theo Dõi Tiến Độ Tổng Thể</h4>
+                    <p>Thanh tiến độ cập nhật realtime — bạn luôn biết mình đã hoàn thành bao nhiêu % khóa học. 
+                       Hoàn thành 100% → nhận chứng chỉ tự động!</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quiz Demo -->
+        <div class="quiz-demo fade-in-section">
+            <div class="quiz-demo-header">
+                <h4>📝 Kiểm tra: ChatGPT — Bài 5: Viết Prompt Hiệu Quả</h4>
+                <span>Câu 2 / 4 • Cần đạt 70% để hoàn thành</span>
+            </div>
+            <div class="quiz-demo-body">
+                <div class="quiz-question">
+                    Khi viết prompt cho ChatGPT, yếu tố nào sau đây giúp AI trả lời chính xác nhất?
+                </div>
+                <div class="quiz-option">
+                    <div class="radio"></div>
+                    <span>Viết prompt càng ngắn càng tốt</span>
+                </div>
+                <div class="quiz-option correct">
+                    <div class="radio"></div>
+                    <span>Cung cấp ngữ cảnh cụ thể, vai trò rõ ràng và ví dụ mong muốn</span>
+                </div>
+                <div class="quiz-option">
+                    <div class="radio"></div>
+                    <span>Sử dụng nhiều emoji để AI hiểu cảm xúc</span>
+                </div>
+                <div class="quiz-option">
+                    <div class="radio"></div>
+                    <span>Viết bằng tiếng Anh vì AI chỉ hiểu tiếng Anh</span>
+                </div>
+            </div>
+            <div class="quiz-footer">
+                <span class="quiz-progress">⏱ Không giới hạn thời gian</span>
+                <button class="quiz-btn">Câu tiếp theo →</button>
+            </div>
+        </div>
+
+        <div class="highlight-box fade-in-section" style="margin-top: 32px; background: linear-gradient(135deg, #fce7f3, #fdf2f8); border-color: #f472b6;">
+            <h4 style="color: #be185d;">🏆 Lợi ích của hệ thống Quiz</h4>
+            <ul class="check-list">
+                <li><strong>Học chủ động:</strong> Không chỉ xem video bị động — phải suy nghĩ và trả lời, ghi nhớ tốt hơn 3x</li>
+                <li><strong>Phát hiện lỗ hổng:</strong> Biết ngay kiến thức nào chưa vững để xem lại</li>
+                <li><strong>Động lực hoàn thành:</strong> Thanh tiến độ + chứng chỉ cuối khóa tạo mục tiêu rõ ràng</li>
+                <li><strong>Chứng minh năng lực:</strong> Chứng chỉ Sudemy có mã xác minh online — thêm vào CV để tăng giá trị</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- ═══════════════════ 7. CẢI THIỆN TRANG ADMIN ═══════════════════ -->
+<section class="section" id="admin">
+    <div class="container">
+        <div class="section-header fade-in-section">
+            <div class="section-number admin">07</div>
+            <h2 class="section-title">Trang Quản Trị Thông Minh</h2>
+            <p class="section-subtitle">
+                Giao diện admin được thiết kế cho người không rành kỹ thuật — mọi thao tác đều trực quan, 
+                có xác nhận trước khi thực hiện, và phân quyền rõ ràng.
+            </p>
+        </div>
+
+        <div class="user-story fade-in-section">
+            <p>Mình không biết code nhưng vẫn quản lý được toàn bộ nền tảng Sudemy. Thêm khóa học, 
+               tạo prompt, quản lý đơn hàng — tất cả đều kéo thả, click chuột, không cần chạm vào dòng code nào.</p>
+            <div class="user-story-author">— Admin Sudemy</div>
+        </div>
+
+        <div class="admin-feature-list fade-in-section">
+            <div class="admin-feature-item">
+                <div class="admin-icon">📊</div>
+                <div>
+                    <h4>Dashboard Tổng Quan Trực Quan <span class="badge badge-improved">Cải thiện</span></h4>
+                    <p>Super Admin xem ngay doanh thu hôm nay / tuần / tháng, số đơn hàng mới, số học viên đăng ký — 
+                       tất cả trong một màn hình với biểu đồ và con số rõ ràng. Mỗi vai trò thấy metric phù hợp với mình.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">✍️</div>
+                <div>
+                    <h4>Trình Soạn Thảo WYSIWYG <span class="badge badge-new">Mới</span></h4>
+                    <p>Viết mô tả khóa học, tạo nội dung với trình soạn thảo trực quan — 
+                       in đậm, in nghiêng, thêm link, chèn hình ảnh — như dùng Google Docs, không cần biết HTML.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">🖼️</div>
+                <div>
+                    <h4>Upload Ảnh Kéo-Thả <span class="badge badge-new">Mới</span></h4>
+                    <p>Kéo ảnh từ máy tính vào vùng upload — hệ thống tự động nén, resize về kích thước tối ưu. 
+                       Xem preview trước khi lưu, không lo ảnh quá nặng.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">🎨</div>
+                <div>
+                    <h4>White-label Dễ Dàng <span class="badge badge-improved">Cải thiện</span></h4>
+                    <p>Thay đổi tên nền tảng, logo, favicon, màu chủ đạo, link mạng xã hội, và nội dung footer — 
+                       tất cả qua giao diện Settings, có preview trước khi áp dụng.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">🏷️</div>
+                <div>
+                    <h4>Quản Lý Mã Giảm Giá & Flash Sale <span class="badge badge-improved">Cải thiện</span></h4>
+                    <p>Tạo mã giảm giá (% hoặc cố định), giới hạn số lần dùng, đặt ngày hết hạn. 
+                       Tạo Flash Sale với thời gian bắt đầu/kết thúc — banner countdown tự động hiện trên trang chủ.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">👥</div>
+                <div>
+                    <h4>Phân Quyền 3 Cấp <span class="badge badge-security">Bảo mật</span></h4>
+                    <p><strong>Super Admin:</strong> toàn quyền. 
+                       <strong>Content Editor:</strong> quản lý khóa học, bài học, prompt, quiz. 
+                       <strong>Moderator:</strong> quản lý đơn hàng, ticket hỗ trợ, mã giảm giá. 
+                       Mỗi người chỉ thấy phần mình quản lý.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">📋</div>
+                <div>
+                    <h4>Bảng Dữ Liệu Thông Minh <span class="badge badge-improved">Cải thiện</span></h4>
+                    <p>Tất cả danh sách (khóa học, đơn hàng, users, prompt...) đều dùng DataTable — 
+                       sắp xếp theo cột, phân trang, tìm kiếm, status badge có màu (Nháp - Xám, Xuất bản - Xanh, Khóa - Đỏ).</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">⚠️</div>
+                <div>
+                    <h4>Xác Nhận Trước Khi Xóa <span class="badge badge-security">Bảo mật</span></h4>
+                    <p>Mọi thao tác xóa đều hiện dialog xác nhận: "Bạn có chắc chắn? Hành động này không thể hoàn tác." — 
+                       ngăn chặn xóa nhầm dữ liệu quan trọng.</p>
+                </div>
+            </div>
+
+            <div class="admin-feature-item">
+                <div class="admin-icon">🎫</div>
+                <div>
+                    <h4>Hệ Thống Ticket Hỗ Trợ <span class="badge badge-new">Mới</span></h4>
+                    <p>Người dùng gửi yêu cầu hỗ trợ qua form (chủ đề + nội dung). Moderator nhận và trả lời ngay trong Admin Panel. 
+                       Trạng thái ticket: Mới → Đang xử lý → Đã giải quyết — theo dõi dễ dàng.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Admin Routes Table -->
+        <table class="comparison-table fade-in-section" style="margin-top: 40px;">
+            <thead>
+                <tr>
+                    <th>Trang quản trị</th>
+                    <th>Chức năng</th>
+                    <th>Quyền truy cập</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><strong>/admin</strong></td>
+                    <td>Dashboard tổng quan (doanh thu, đơn hàng, học viên)</td>
+                    <td><span class="badge badge-security">Super Admin</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/courses</strong></td>
+                    <td>Quản lý khóa học + bài học + quiz</td>
+                    <td><span class="badge badge-new">Admin + Editor</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/prompts</strong></td>
+                    <td>Quản lý thư viện Prompt AI</td>
+                    <td><span class="badge badge-new">Admin + Editor</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/orders</strong></td>
+                    <td>Quản lý đơn hàng, lịch sử thanh toán</td>
+                    <td><span class="badge badge-improved">Admin + Mod</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/users</strong></td>
+                    <td>Quản lý tài khoản người dùng</td>
+                    <td><span class="badge badge-security">Super Admin</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/coupons</strong></td>
+                    <td>Tạo/quản lý mã giảm giá</td>
+                    <td><span class="badge badge-improved">Admin + Mod</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/flash-sales</strong></td>
+                    <td>Tạo/quản lý Flash Sale events</td>
+                    <td><span class="badge badge-security">Super Admin</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/tickets</strong></td>
+                    <td>Quản lý yêu cầu hỗ trợ</td>
+                    <td><span class="badge badge-improved">Admin + Mod</span></td>
+                </tr>
+                <tr>
+                    <td><strong>/admin/settings</strong></td>
+                    <td>Cài đặt white-label (logo, tên, màu sắc)</td>
+                    <td><span class="badge badge-security">Super Admin</span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</section>
+
+<!-- ═══════════════════ FOOTER ═══════════════════ -->
+<footer class="doc-footer">
+    <h3>🚀 Sudemy — Học AI, Ứng Dụng Ngay</h3>
+    <p>Nền tảng học tập AI tiếng Việt với khóa học ngắn gọn, thực hành, 
+       prompt miễn phí và AI trợ lý học tập thông minh.</p>
+    <div class="footer-meta">
+        <p>📄 Tài liệu Cải tiến Hệ thống Sudemy — Phiên bản 2026</p>
+        <p>Cập nhật: Tháng 6, 2026 • Tech Stack: React 19 + Vite + Express.js + MongoDB Atlas</p>
+    </div>
+</footer>
+
+<!-- ═══════════════════ SCROLL ANIMATIONS ═══════════════════ -->
+<script>
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+            }
+        });
+    }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    document.querySelectorAll('.fade-in-section').forEach(el => observer.observe(el));
+
+    // Active TOC link
+    const sections = document.querySelectorAll('.section[id]');
+    const tocLinks = document.querySelectorAll('.toc-link');
+
+    const tocObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                tocLinks.forEach(link => link.classList.remove('active'));
+                const activeLink = document.querySelector(`.toc-link[href="#${entry.target.id}"]`);
+                if (activeLink) activeLink.classList.add('active');
+            }
+        });
+    }, {
+        threshold: 0.2,
+        rootMargin: '-80px 0px -50% 0px'
+    });
+
+    sections.forEach(section => tocObserver.observe(section));
+
+    // Smooth scroll for TOC links
+    tocLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href').substring(1);
+            const target = document.getElementById(targetId);
+            if (target) {
+                const tocHeight = document.querySelector('.toc').offsetHeight;
+                const targetPosition = target.offsetTop - tocHeight - 16;
+                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

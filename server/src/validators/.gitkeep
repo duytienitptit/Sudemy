@@ -1,0 +1,6 @@
+# Validators
+# Zod schemas for request body/param/query validation.
+# Always validate req.body through these before using in controllers.
+#
+# Naming: <domain>.validator.ts
+# Example: auth.validator.ts, course.validator.ts
