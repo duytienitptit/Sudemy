@@ -124,7 +124,7 @@ export const CourseDetail = () => {
             <div>
               <h2 className="text-2xl font-bold text-[var(--color-on-surface)] mb-6">Đánh giá của học viên</h2>
               {course.ratings && course.ratings.count > 0 ? (
-                <div className="bg-[var(--color-surface-container)] rounded-xl p-8 border border-[var(--color-outline-variant)]">
+                <div className="bg-[var(--color-surface-container-lowest)] rounded-xl p-8 border border-[var(--color-outline-variant)]">
                   <div className="flex flex-col sm:flex-row items-center gap-8">
                     {/* Average Score */}
                     <div className="text-center shrink-0">
@@ -133,7 +133,7 @@ export const CourseDetail = () => {
                       </p>
                       <div className="flex items-center justify-center gap-0.5 mt-2 mb-1">
                         {Array.from({ length: 5 }).map((_, i) => (
-                          <svg key={i} className={`w-5 h-5 ${i < Math.round(course.ratings?.average || 0) ? 'text-yellow-400' : 'text-gray-300'}`} fill="currentColor" viewBox="0 0 20 20">
+                          <svg key={i} className={`w-5 h-5 ${i < Math.round(course.ratings?.average || 0) ? 'star-filled' : 'star-empty text-[var(--color-outline-variant)]'}`} fill="currentColor" viewBox="0 0 20 20">
                             <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
                           </svg>
                         ))}
@@ -144,19 +144,19 @@ export const CourseDetail = () => {
                     </div>
 
                     {/* Rating Bars */}
-                    <div className="flex-1 w-full space-y-2">
+                    <div className="flex-1 w-full space-y-2.5">
                       {[5, 4, 3, 2, 1].map((star) => {
                         const percent = star === 5 ? 78 : star === 4 ? 15 : star === 3 ? 5 : star === 2 ? 1 : 1
                         return (
                           <div key={star} className="flex items-center gap-3">
                             <span className="text-sm text-[var(--color-on-surface-variant)] w-12 shrink-0">{star} sao</span>
-                            <div className="flex-1 h-2.5 bg-[var(--color-outline-variant)] rounded-full overflow-hidden">
+                            <div className="flex-1 h-2 bg-[var(--color-surface-container)] rounded-full overflow-hidden">
                               <div
-                                className="h-full bg-yellow-400 rounded-full transition-all"
+                                className="h-full bg-[var(--color-tertiary-dim)] rounded-full transition-all duration-500"
                                 style={{ width: `${percent}%` }}
                               />
                             </div>
-                            <span className="text-sm text-[var(--color-on-surface-variant)] w-10 text-right">{percent}%</span>
+                            <span className="text-sm text-[var(--color-on-surface-variant)] w-10 text-right tabular-nums">{percent}%</span>
                           </div>
                         )
                       })}
@@ -164,7 +164,7 @@ export const CourseDetail = () => {
                   </div>
                 </div>
               ) : (
-                <div className="bg-[var(--color-surface-container)] rounded-xl p-8 border border-[var(--color-outline-variant)] flex items-center justify-center min-h-[120px]">
+                <div className="bg-[var(--color-surface-container-lowest)] rounded-xl p-8 border border-[var(--color-outline-variant)] flex items-center justify-center min-h-[120px]">
                   <p className="text-[var(--color-on-surface-variant)] text-center">
                     Chưa có đánh giá nào cho khóa học này.
                   </p>

@@ -20,25 +20,78 @@ export type ValidateCouponBody = z.infer<typeof validateCouponSchema>
 
 // ─── Admin: Create Coupon ─────────────────────────────────────────────────────
 
-export const createCouponSchema = z.object({
-  code: z
-    .string()
-    .min(3, 'Code must be at least 3 characters')
-    .max(20, 'Code must be at most 20 characters')
-    .regex(/^[A-Z0-9]+$/, 'Code must be uppercase alphanumeric')
-    .transform((v) => v.toUpperCase()),
-  discountType: z.enum(['percent', 'fixed']),
-  discountValue: z.number().positive('discountValue must be positive'),
-  maxUses: z.number().int().min(1).optional(),
-  expiresAt: z.string().datetime().optional(),
-  isActive: z.boolean().optional().default(true),
-})
+export const createCouponSchema = z
+  .object({
+    code: z
+      .string()
+      .min(3, 'Code must be at least 3 characters')
+      .max(20, 'Code must be at most 20 characters')
+      .regex(/^[A-Z0-9]+$/, 'Code must be uppercase alphanumeric')
+      .transform((v) => v.toUpperCase()),
+    discountType: z.enum(['percent', 'fixed']),
+    discountValue: z.number().positive('discountValue must be positive'),
+    maxUses: z.number().int().min(1).optional(),
+    expiresAt: z.string().datetime().optional(),
+    isActive: z.boolean().optional().default(true),
+  })
+  .superRefine((data, ctx) => {
+    if (data.discountType === 'percent') {
+      if (data.discountValue < 1 || data.discountValue > 99) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Phần trăm giảm giá phải từ 1% đến 99%',
+          path: ['discountValue'],
+        })
+      }
+    } else if (data.discountType === 'fixed') {
+      if (data.discountValue < 1000) {
+        ctx.addIssue({
+          code: z.ZodIssueCode.custom,
+          message: 'Giá trị giảm cố định phải ít nhất 1.000 VNĐ',
+          path: ['discountValue'],
+        })
+      }
+    }
+  })
 
 export type CreateCouponBody = z.infer<typeof createCouponSchema>
 
-// ─── Admin: Update Coupon ─────────────────────────────────────────────────────
-
-export const updateCouponSchema = createCouponSchema.partial()
+export const updateCouponSchema = z
+  .object({
+    code: z
+      .string()
+      .min(3, 'Code must be at least 3 characters')
+      .max(20, 'Code must be at most 20 characters')
+      .regex(/^[A-Z0-9]+$/, 'Code must be uppercase alphanumeric')
+      .transform((v) => v.toUpperCase())
+      .optional(),
+    discountType: z.enum(['percent', 'fixed']).optional(),
+    discountValue: z.number().positive('discountValue must be positive').optional(),
+    maxUses: z.number().int().min(1).optional(),
+    expiresAt: z.string().datetime().optional(),
+    isActive: z.boolean().optional(),
+  })
+  .superRefine((data, ctx) => {
+    if (data.discountType && data.discountValue !== undefined) {
+      if (data.discountType === 'percent') {
+        if (data.discountValue < 1 || data.discountValue > 99) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Phần trăm giảm giá phải từ 1% đến 99%',
+            path: ['discountValue'],
+          })
+        }
+      } else if (data.discountType === 'fixed') {
+        if (data.discountValue < 1000) {
+          ctx.addIssue({
+            code: z.ZodIssueCode.custom,
+            message: 'Giá trị giảm cố định phải ít nhất 1.000 VNĐ',
+            path: ['discountValue'],
+          })
+        }
+      }
+    }
+  })
 
 export type UpdateCouponBody = z.infer<typeof updateCouponSchema>
 

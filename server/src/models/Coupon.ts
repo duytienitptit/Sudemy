@@ -31,7 +31,7 @@ const couponSchema = new Schema<ICoupon>(
     discountValue: {
       type: Number,
       required: [true, 'Discount value is required'],
-      min: [0, 'Discount value must be non-negative'],
+      min: [1, 'Discount value must be at least 1'],
     },
     maxUses: {
       type: Number,

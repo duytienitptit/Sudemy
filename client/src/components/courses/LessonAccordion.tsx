@@ -25,31 +25,33 @@ export function LessonAccordion({ lessons, totalLessons, courseSlug, isPurchased
   const completedCount = completedLessons.length
 
   return (
-    <div className="border border-[var(--color-outline-variant)] bg-[var(--color-surface)] rounded-sm overflow-hidden">
+    <div className="border border-[var(--color-outline-variant)] bg-[var(--color-surface-container-lowest)] rounded-xl overflow-hidden">
       {/* Accordion Header */}
       <button 
         onClick={() => setIsOpen(!isOpen)}
-        className="w-full flex items-center justify-between p-4 bg-[var(--color-surface-container-lowest)] hover:bg-[var(--color-surface-container-low)] transition-colors text-left"
+        className="w-full flex items-center justify-between p-5 bg-[var(--color-surface-container-low)] hover:bg-[var(--color-surface-container)] transition-colors text-left"
       >
         <div className="flex flex-col sm:flex-row sm:items-center sm:gap-4">
           <h3 className="font-bold text-[var(--color-on-surface)] text-lg">Nội dung bài học</h3>
         </div>
         <div className="flex items-center text-sm text-[var(--color-on-surface-variant)]">
           {isPurchased && completedCount > 0 && (
-            <span className="hidden sm:inline-block mr-4 text-[var(--color-success)]">
+            <span className="hidden sm:inline-block mr-4 text-[var(--color-success)] font-medium">
               {completedCount}/{totalLessons} hoàn thành
             </span>
           )}
-          <span className="hidden sm:inline-block mr-4">{totalLessons} bài học</span>
-          {isOpen ? <ChevronUp className="w-5 h-5" /> : <ChevronDown className="w-5 h-5" />}
+          <span className="hidden sm:inline-block mr-4 text-[var(--color-on-surface-variant)]">{totalLessons} bài học</span>
+          <span className="w-8 h-8 flex items-center justify-center rounded-full bg-[var(--color-surface-container-high)] transition-transform duration-200">
+            {isOpen ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
+          </span>
         </div>
       </button>
 
       {/* Accordion Body */}
       {isOpen && (
-        <div className="divide-y divide-[var(--color-outline-variant)]">
+        <div className="divide-y divide-[var(--color-outline-variant)]/60">
           {lessons && lessons.length > 0 ? (
-            lessons.map((lesson) => {
+            lessons.map((lesson, index) => {
               const isCompleted = completedLessons.includes(lesson._id)
               const isClickable = isPurchased || lesson.isFree
 
@@ -57,33 +59,34 @@ export function LessonAccordion({ lessons, totalLessons, courseSlug, isPurchased
                 <div 
                   key={lesson._id} 
                   onClick={() => handleLessonClick(lesson)}
-                  className={`flex items-center justify-between p-4 transition-colors ${
+                  className={`flex items-center justify-between px-5 py-3.5 transition-all duration-200 ${
                     isClickable
-                      ? 'hover:bg-[var(--color-primary)]/5 cursor-pointer'
-                      : 'hover:bg-[var(--color-surface-container-lowest)]'
+                      ? 'hover:bg-[var(--color-primary)]/5 hover:pl-6 cursor-pointer'
+                      : 'hover:bg-[var(--color-surface-container-low)]'
                   }`}
+                  style={{ animationDelay: `${index * 30}ms` }}
                 >
-                  <div className="flex items-center group">
+                  <div className="flex items-center group min-w-0">
                     {isCompleted ? (
-                      <CheckCircle2 className="w-4 h-4 mr-4 flex-shrink-0 text-[var(--color-success)]" />
+                      <CheckCircle2 className="w-4.5 h-4.5 mr-4 flex-shrink-0 text-[var(--color-success)]" />
                     ) : (
-                      <PlayCircle className={`w-4 h-4 mr-4 flex-shrink-0 transition-colors ${
+                      <PlayCircle className={`w-4.5 h-4.5 mr-4 flex-shrink-0 transition-all duration-200 ${
                         isClickable
-                          ? 'text-[var(--color-primary)]'
-                          : 'text-[var(--color-on-surface-variant)] group-hover:text-[var(--color-primary)]'
+                          ? 'text-[var(--color-primary)] group-hover:scale-110'
+                          : 'text-[var(--color-on-surface-variant)]/60'
                       }`} />
                     )}
-                    <span className={`text-sm ${
+                    <span className={`text-sm truncate ${
                       isCompleted
-                        ? 'text-[var(--color-success)]'
+                        ? 'text-[var(--color-success)] font-medium'
                         : isClickable
-                        ? 'text-[var(--color-primary)] underline underline-offset-2'
+                        ? 'text-[var(--color-on-surface)] hover:text-[var(--color-primary)] transition-colors'
                         : 'text-[var(--color-on-surface)]'
                     }`}>
                       {lesson.title}
                     </span>
                   </div>
-                  <div className="flex items-center ml-4">
+                  <div className="flex items-center ml-4 flex-shrink-0">
                     {isCompleted ? (
                       <span className="text-xs text-[var(--color-success)] font-medium mr-4 hidden sm:block">
                         Hoàn thành
@@ -92,19 +95,19 @@ export function LessonAccordion({ lessons, totalLessons, courseSlug, isPurchased
                       /* Purchased but not completed — no badge, just duration */
                       null
                     ) : lesson.isFree ? (
-                      <span className="text-xs text-[var(--color-on-primary)] bg-[var(--color-primary)] px-2 py-0.5 rounded mr-4 hidden sm:block">
+                      <span className="text-xs font-semibold text-[var(--color-primary)] bg-[var(--color-primary)]/10 px-2.5 py-1 rounded-full mr-4 hidden sm:block">
                         Xem thử
                       </span>
                     ) : (
-                      <Lock className="w-4 h-4 text-[var(--color-on-surface-variant)] mr-4 hidden sm:block" />
+                      <Lock className="w-3.5 h-3.5 text-[var(--color-on-surface-variant)]/50 mr-4 hidden sm:block" />
                     )}
-                    <span className="text-sm text-[var(--color-on-surface-variant)]">10:00</span>
+                    <span className="text-sm text-[var(--color-on-surface-variant)] tabular-nums">10:00</span>
                   </div>
                 </div>
               )
             })
           ) : (
-            <div className="p-6 text-center text-[var(--color-on-surface-variant)] italic">
+            <div className="p-8 text-center text-[var(--color-on-surface-variant)] italic">
               Nội dung bài học đang được cập nhật.
             </div>
           )}
@@ -113,4 +116,3 @@ export function LessonAccordion({ lessons, totalLessons, courseSlug, isPurchased
     </div>
   )
 }
-

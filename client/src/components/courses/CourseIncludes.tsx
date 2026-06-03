@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { PlayCircle, FileText, Download, Award, Infinity, Smartphone, Tag, Loader2, CheckCircle2 } from 'lucide-react'
+import { PlayCircle, FileText, Download, Award, Infinity, Smartphone, Tag, Loader2, CheckCircle2, ShieldCheck } from 'lucide-react'
 import toast from 'react-hot-toast'
 import type { Course } from '@/types/course.types'
 import { createOrder, validateCoupon } from '@/services/payment.service'
@@ -115,9 +115,9 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
   const isCheckoutLoading = orderMutation.isPending
 
   return (
-    <div className="rounded-xl overflow-hidden flex flex-col elevation-1">
+    <div className="course-sidebar-card flex flex-col">
       {/* Thumbnail */}
-      <div className="relative aspect-video hidden lg:block">
+      <div className="course-thumbnail-wrap aspect-video hidden lg:block">
         <img
           src={thumbnail || 'https://placehold.co/600x338?text=Course'}
           alt="Course Thumbnail"
@@ -133,18 +133,18 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
               {formatPrice(displayPrice)}
             </span>
             {originalPrice && originalPrice > displayPrice && (
-              <span className="text-lg text-[var(--color-on-surface-variant)] line-through mb-1">
+              <span className="text-base text-[var(--color-on-surface-variant)] line-through mb-0.5">
                 {formatPrice(originalPrice)}
               </span>
             )}
             {discountPercent > 0 && (
-              <span className="text-sm font-medium text-[var(--color-error)] mb-1.5 bg-red-50 dark:bg-red-900/20 px-2 py-0.5 rounded">
+              <span className="text-xs font-bold text-[var(--color-error)] mb-1 bg-[var(--color-error-container)] px-2 py-0.5 rounded-full">
                 -{discountPercent}%
               </span>
             )}
           </div>
           {couponApplied && (
-            <div className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400 mt-2">
+            <div className="flex items-center gap-2 text-sm text-[var(--color-success)] mt-2">
               <CheckCircle2 className="w-4 h-4" />
               <span>
                 Đã áp dụng mã <strong>{couponApplied.code}</strong>
@@ -167,7 +167,7 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
           {alreadyPurchased ? (
             <button
               onClick={() => navigate(`/learn/${slug}`)}
-              className="w-full py-3.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg transition-colors text-lg flex items-center justify-center gap-2"
+              className="w-full py-3.5 bg-[var(--color-success)] hover:brightness-110 text-white font-bold rounded-xl transition-all text-lg flex items-center justify-center gap-2"
             >
               <PlayCircle className="w-5 h-5" />
               Vào học ngay
@@ -178,7 +178,7 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
                 id="btn-buy-now"
                 onClick={handleCheckout}
                 disabled={isCheckoutLoading}
-                className="w-full py-3.5 bg-[var(--color-primary)] hover:bg-[var(--color-primary-hover)] text-[var(--color-on-primary)] font-bold rounded-lg transition-colors text-lg flex items-center justify-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
+                className="btn-buy-course w-full py-3.5 font-bold rounded-xl text-lg flex items-center justify-center gap-2"
               >
                 {isCheckoutLoading ? (
                   <>
@@ -197,7 +197,7 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
         {!alreadyPurchased && (
           <div className="mb-5">
             <label className="block text-sm font-medium text-[var(--color-on-surface)] mb-2 flex items-center gap-1.5">
-              <Tag className="w-4 h-4" />
+              <Tag className="w-4 h-4 text-[var(--color-primary)]" />
               Mã giảm giá
             </label>
             <div className="flex gap-2">
@@ -217,7 +217,7 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
                 id="btn-apply-coupon"
                 onClick={handleApplyCoupon}
                 disabled={couponMutation.isPending}
-                className="px-5 py-2.5 text-sm font-semibold bg-[var(--color-primary)] text-[var(--color-on-primary)] rounded-lg hover:bg-[var(--color-primary-hover)] transition-colors disabled:opacity-60 shrink-0"
+                className="px-5 py-2.5 text-sm font-semibold bg-[var(--color-surface-container-high)] text-[var(--color-on-surface)] rounded-lg hover:bg-[var(--color-surface-container-highest)] border border-[var(--color-outline-variant)] transition-colors disabled:opacity-60 shrink-0"
               >
                 {couponMutation.isPending ? <Loader2 className="w-4 h-4 animate-spin" /> : 'Áp dụng'}
               </button>
@@ -228,36 +228,41 @@ export function CourseIncludes({ course }: CourseIncludesProps) {
           </div>
         )}
 
-        <div className="text-center text-sm text-[var(--color-on-surface-variant)] mb-6">
-          Bảo đảm hoàn tiền trong 30 ngày
+        {/* Money-back guarantee */}
+        <div className="flex items-center justify-center gap-1.5 text-sm text-[var(--color-on-surface-variant)] mb-6">
+          <ShieldCheck className="w-4 h-4 text-[var(--color-success)]" />
+          <span>Bảo đảm hoàn tiền trong 30 ngày</span>
         </div>
+
+        {/* Divider */}
+        <div className="border-t border-[var(--color-outline-variant)]/60 mb-5" />
 
         {/* Course includes */}
         <div>
-          <h4 className="font-bold text-[var(--color-on-surface)] mb-4 text-lg">Khóa học bao gồm:</h4>
-          <ul className="space-y-3 text-sm text-[var(--color-on-surface)]">
-            <li className="flex items-center">
-              <PlayCircle className="w-4 h-4 mr-3 text-[var(--color-on-surface-variant)]" />
+          <h4 className="font-bold text-[var(--color-on-surface)] mb-4 text-base">Khóa học bao gồm:</h4>
+          <ul className="space-y-1 text-sm text-[var(--color-on-surface)]">
+            <li className="course-feature-item">
+              <PlayCircle className="w-4 h-4 mr-3" />
               <span>Video xem trực tuyến</span>
             </li>
-            <li className="flex items-center">
-              <FileText className="w-4 h-4 mr-3 text-[var(--color-on-surface-variant)]" />
+            <li className="course-feature-item">
+              <FileText className="w-4 h-4 mr-3" />
               <span>Tài liệu học tập</span>
             </li>
-            <li className="flex items-center">
-              <Download className="w-4 h-4 mr-3 text-[var(--color-on-surface-variant)]" />
+            <li className="course-feature-item">
+              <Download className="w-4 h-4 mr-3" />
               <span>Tài nguyên tải về</span>
             </li>
-            <li className="flex items-center">
-              <Smartphone className="w-4 h-4 mr-3 text-[var(--color-on-surface-variant)]" />
+            <li className="course-feature-item">
+              <Smartphone className="w-4 h-4 mr-3" />
               <span>Học mọi thiết bị</span>
             </li>
-            <li className="flex items-center">
-              <Infinity className="w-4 h-4 mr-3 text-[var(--color-on-surface-variant)]" />
+            <li className="course-feature-item">
+              <Infinity className="w-4 h-4 mr-3" />
               <span>Truy cập trọn đời</span>
             </li>
-            <li className="flex items-center">
-              <Award className="w-4 h-4 mr-3 text-[var(--color-on-surface-variant)]" />
+            <li className="course-feature-item">
+              <Award className="w-4 h-4 mr-3" />
               <span>Chứng chỉ hoàn thành</span>
             </li>
           </ul>

@@ -63,19 +63,73 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
     isActive: initial?.isActive ?? true,
   })
 
+  const [errors, setErrors] = useState<Record<string, string>>({})
+
   function set<K extends keyof CouponFormInput>(key: K, value: CouponFormInput[K]) {
     setForm((f) => ({ ...f, [key]: value }))
+    // Clear error when field changes
+    if (errors[key]) {
+      setErrors((prev) => {
+        const next = { ...prev }
+        delete next[key]
+        return next
+      })
+    }
+  }
+
+  const isPercent = form.discountType === 'percent'
+
+  function validate(): boolean {
+    const newErrors: Record<string, string> = {}
+
+    if (!form.code || form.code.length < 3) {
+      newErrors.code = 'Mã coupon phải có ít nhất 3 ký tự'
+    }
+
+    const val = Number(form.discountValue)
+    if (isNaN(val) || val <= 0) {
+      newErrors.discountValue = 'Giá trị giảm giá phải lớn hơn 0'
+    } else if (isPercent) {
+      if (val < 1 || val > 99) {
+        newErrors.discountValue = 'Phần trăm giảm giá phải từ 1% đến 99%'
+      }
+    } else {
+      // fixed
+      if (val < 1000) {
+        newErrors.discountValue = 'Giá trị giảm phải ít nhất 1.000 VNĐ'
+      }
+    }
+
+    const maxUsesVal = Number(form.maxUses)
+    if (isNaN(maxUsesVal) || maxUsesVal < 1) {
+      newErrors.maxUses = 'Giới hạn sử dụng phải ít nhất 1'
+    }
+
+    if (!form.expiresAt) {
+      newErrors.expiresAt = 'Vui lòng chọn ngày hết hạn'
+    }
+
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  function handleSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (validate()) {
+      onSubmit(form)
+    }
   }
 
   const labelClass = 'block text-label-sm font-medium text-[var(--color-on-surface)] mb-1'
   const inputClass =
-    'w-full bg-[var(--color-surface)] border border-[var(--color-outline-variant)] rounded-lg px-3 py-2 text-sm text-[var(--color-on-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)]'
+    'w-full bg-[var(--color-surface)] border rounded-lg px-3 py-2 text-sm text-[var(--color-on-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--color-primary)] transition-colors'
+  const inputNormal = inputClass + ' border-[var(--color-outline-variant)]'
+  const inputError = inputClass + ' border-[var(--color-error)] ring-1 ring-[var(--color-error)]'
+  const errorTextClass = 'text-xs text-[var(--color-error)] mt-1'
+  const hintTextClass = 'text-xs text-[var(--color-on-surface-variant)] mt-1'
 
   return (
-    <form
-      onSubmit={(e) => { e.preventDefault(); onSubmit(form) }}
-      className="space-y-4"
-    >
+    <form onSubmit={handleSubmit} className="space-y-4">
       <div>
         <label className={labelClass}>Mã coupon *</label>
         <input
@@ -86,9 +140,10 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
           maxLength={20}
           value={form.code}
           onChange={(e) => set('code', e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
-          className={inputClass + ' font-mono uppercase'}
+          className={(errors.code ? inputError : inputNormal) + ' font-mono uppercase'}
           placeholder="SUMMER2025"
         />
+        {errors.code && <p className={errorTextClass}>{errors.code}</p>}
       </div>
 
       <div className="grid grid-cols-2 gap-3">
@@ -97,8 +152,17 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
           <select
             id="coupon-discount-type"
             value={form.discountType}
-            onChange={(e) => set('discountType', e.target.value as 'percent' | 'fixed')}
-            className={inputClass}
+            onChange={(e) => {
+              const type = e.target.value as 'percent' | 'fixed'
+              set('discountType', type)
+              // Reset to sensible default when switching type
+              if (type === 'percent') {
+                set('discountValue', 10)
+              } else {
+                set('discountValue', 50000)
+              }
+            }}
+            className={inputNormal}
           >
             <option value="percent">Phần trăm (%)</option>
             <option value="fixed">Cố định (VNĐ)</option>
@@ -106,14 +170,15 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
         </div>
         <div>
           <label className={labelClass}>
-            Giá trị {form.discountType === 'percent' ? '(%)' : '(VNĐ)'} *
+            Giá trị {isPercent ? '(%)' : '(VNĐ)'} *
           </label>
           <input
             id="coupon-discount-value"
             type="number"
             required
-            min={1}
-            max={form.discountType === 'percent' ? 100 : undefined}
+            min={isPercent ? 1 : 1000}
+            max={isPercent ? 99 : undefined}
+            step={isPercent ? 1 : 1000}
             value={form.discountValue}
             onChange={(e) => {
               if (e.target.value === '') {
@@ -122,11 +187,18 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
               }
               let val = Number(e.target.value)
               if (val < 0) val = 0
-              if (form.discountType === 'percent' && val > 100) val = 100
+              if (isPercent && val > 99) val = 99
               set('discountValue', val)
             }}
-            className={inputClass}
+            className={errors.discountValue ? inputError : inputNormal}
+            placeholder={isPercent ? '10' : '50000'}
           />
+          {errors.discountValue && <p className={errorTextClass}>{errors.discountValue}</p>}
+          {!errors.discountValue && (
+            <p className={hintTextClass}>
+              {isPercent ? 'Từ 1% đến 99%' : 'Tối thiểu 1.000 VNĐ'}
+            </p>
+          )}
         </div>
       </div>
 
@@ -140,8 +212,9 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
             min={1}
             value={form.maxUses}
             onChange={(e) => set('maxUses', e.target.value === '' ? '' : Number(e.target.value))}
-            className={inputClass}
+            className={errors.maxUses ? inputError : inputNormal}
           />
+          {errors.maxUses && <p className={errorTextClass}>{errors.maxUses}</p>}
         </div>
         <div>
           <label className={labelClass}>Ngày hết hạn *</label>
@@ -152,8 +225,9 @@ function CouponForm({ initial, onSubmit, onCancel, isPending }: CouponFormProps)
             value={form.expiresAt}
             onChange={(e) => set('expiresAt', e.target.value)}
             onClick={(e) => (e.target as HTMLInputElement).showPicker?.()}
-            className={inputClass + ' cursor-pointer'}
+            className={(errors.expiresAt ? inputError : inputNormal) + ' cursor-pointer'}
           />
+          {errors.expiresAt && <p className={errorTextClass}>{errors.expiresAt}</p>}
         </div>
       </div>
 

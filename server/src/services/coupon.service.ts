@@ -54,9 +54,19 @@ export class CouponService {
    *   - 409 COUPON_CODE_EXISTS — duplicate code
    */
   async create(input: CreateCouponInput): Promise<ICoupon> {
-    // Business rule: percent discount cannot exceed 100
-    if (input.discountType === 'percent' && input.discountValue > 100) {
-      throw new AppError('Percent discount cannot exceed 100', 400, 'INVALID_DISCOUNT')
+    // Business rule: discount value must not be zero
+    if (input.discountValue <= 0) {
+      throw new AppError('Discount value must be greater than 0', 400, 'INVALID_DISCOUNT')
+    }
+
+    // Business rule: percent discount must be 1–99
+    if (input.discountType === 'percent' && (input.discountValue < 1 || input.discountValue > 99)) {
+      throw new AppError('Percent discount must be between 1 and 99', 400, 'INVALID_DISCOUNT')
+    }
+
+    // Business rule: fixed discount minimum 1000 VND
+    if (input.discountType === 'fixed' && input.discountValue < 1000) {
+      throw new AppError('Fixed discount must be at least 1,000 VND', 400, 'INVALID_DISCOUNT')
     }
 
     try {
@@ -84,12 +94,24 @@ export class CouponService {
    *   - 400 INVALID_DISCOUNT — percent discount > 100 after update
    */
   async update(id: string, input: UpdateCouponInput): Promise<ICoupon> {
+    if (input.discountValue !== undefined && input.discountValue <= 0) {
+      throw new AppError('Discount value must be greater than 0', 400, 'INVALID_DISCOUNT')
+    }
+
     if (
       input.discountType === 'percent' &&
       input.discountValue !== undefined &&
-      input.discountValue > 100
+      (input.discountValue < 1 || input.discountValue > 99)
     ) {
-      throw new AppError('Percent discount cannot exceed 100', 400, 'INVALID_DISCOUNT')
+      throw new AppError('Percent discount must be between 1 and 99', 400, 'INVALID_DISCOUNT')
+    }
+
+    if (
+      input.discountType === 'fixed' &&
+      input.discountValue !== undefined &&
+      input.discountValue < 1000
+    ) {
+      throw new AppError('Fixed discount must be at least 1,000 VND', 400, 'INVALID_DISCOUNT')
     }
 
     const update: Record<string, unknown> = { ...input }

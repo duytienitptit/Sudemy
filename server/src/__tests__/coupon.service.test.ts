@@ -77,9 +77,21 @@ describe('CouponService', () => {
       expect(result).toMatchObject({ code: 'SAVE20' })
     })
 
-    it('throws 400 if percent discount > 100', async () => {
+    it('throws 400 if percent discount > 99', async () => {
       await expect(
-        service.create({ code: 'BIG', discountType: 'percent', discountValue: 101 }),
+        service.create({ code: 'BIG', discountType: 'percent', discountValue: 100 }),
+      ).rejects.toMatchObject({ statusCode: 400, code: 'INVALID_DISCOUNT' })
+    })
+
+    it('throws 400 if percent discount is 0', async () => {
+      await expect(
+        service.create({ code: 'ZERO', discountType: 'percent', discountValue: 0 }),
+      ).rejects.toMatchObject({ statusCode: 400, code: 'INVALID_DISCOUNT' })
+    })
+
+    it('throws 400 if fixed discount is less than 1000', async () => {
+      await expect(
+        service.create({ code: 'LOW', discountType: 'fixed', discountValue: 500 }),
       ).rejects.toMatchObject({ statusCode: 400, code: 'INVALID_DISCOUNT' })
     })
 
@@ -139,9 +151,21 @@ describe('CouponService', () => {
       })
     })
 
-    it('throws 400 if percent discount update > 100', async () => {
+    it('throws 400 if percent discount update > 99', async () => {
       await expect(
-        service.update('abc', { discountType: 'percent', discountValue: 150 }),
+        service.update('abc', { discountType: 'percent', discountValue: 100 }),
+      ).rejects.toMatchObject({ statusCode: 400, code: 'INVALID_DISCOUNT' })
+    })
+
+    it('throws 400 if update with zero discount value', async () => {
+      await expect(
+        service.update('abc', { discountType: 'percent', discountValue: 0 }),
+      ).rejects.toMatchObject({ statusCode: 400, code: 'INVALID_DISCOUNT' })
+    })
+
+    it('throws 400 if update fixed discount < 1000', async () => {
+      await expect(
+        service.update('abc', { discountType: 'fixed', discountValue: 100 }),
       ).rejects.toMatchObject({ statusCode: 400, code: 'INVALID_DISCOUNT' })
     })
   })
